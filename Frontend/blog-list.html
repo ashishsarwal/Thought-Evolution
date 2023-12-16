@@ -14,6 +14,7 @@
             width: 5%;
         }
     </style>
+    <script src="./js/main.js"></script>
 </head>
 <body>
     <div class="bg-primary pt-5 sticky-top" style="top: -3rem;">
@@ -27,69 +28,41 @@
                     <li class="nav-item"><a href="" class="nav-link">TOPICS</a></li>
                     <li class="nav-item"><a href="" class="nav-link">ABOUT PROJECT</a></li>
                     <li class="nav-item"><a href="" class="nav-link">CONTACTS</a></li>
-                    <li class="nav-item"><a href="" class="nav-link active">ADMIN</a></li>
+                    <li class="nav-item dropdown">
+                      <a href="" class="nav-link dropdown-toggle active" role="button" data-bs-toggle="dropdown">
+                        ADMIN
+                      </a>
+                      <ul class="dropdown-menu">
+                        <li><a href="./topic-list.html" class="dropdown-item">Manage Topics</a></li>
+                        <li><a href="./blog-list.html" class="dropdown-item">Manage Blogs</a></li>
+  
+                      </ul>
+                    </li>
                 </ul>
             </nav>
         </div>
     </div>
-    <div class="container my-5">
-        <ul class="list-group">
-            <li class="list-group-item">
-                <h3>Title-1</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-2</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-3</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-4</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-5</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-6</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-7</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-8</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-9</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-10</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-11</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-12</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-            <li class="list-group-item">
-                <h3>Title-13</h3>
-                <div>Description of the blog will appear here.</div>
-            </li>
-        </ul>
+    <div id="blog-list" class="container my-5">
+        <script>
+            function createBlogList(){
+                fetch(`${getAPIDomain()}/blog`)
+                .then((response) => response.json())
+                .then(data=>{
+                    let listHtml = `<ul class="list-group">`;
+                    data.forEach(item =>{
+                        listHtml = listHtml + `<li class="list-group-item">`;
+                        listHtml = listHtml + `<a href="./create-blog.html?blogId=${item.Id}"><h3>${item.Title}</h3></a>`;
+                        listHtml = listHtml + `<div>${item.Description}</div>`;
+                        listHtml = listHtml + `</li>`;
+                    });
+                    listHtml = listHtml + `</ul>`;
+
+                    document.getElementById('blog-list').innerHTML = listHtml;
+                });
+            };
+            createBlogList();
+        </script> 
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.min.js" integrity="sha384-BBtl+eGJRgqQAUMxJ7pMwbEyER4l1g+O15P+16Ep7Q9Q+zqX6gSbd85u4mG4QzX+" crossorigin="anonymous"></script>
 </body>
 </html>
