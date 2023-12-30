@@ -24,7 +24,7 @@
                     <img src="./resources/logo.png" alt="Thought Evolution" width="220px">
                 </a>
                 <ul class="navbar-nav ml-3">
-                    <li class="nav-item"><a href="" class="nav-link">HOME</a></li>
+                    <li class="nav-item"><a href="./index.html" class="nav-link">HOME</a></li>
                     <li class="nav-item"><a href="" class="nav-link">TOPICS</a></li>
                     <li class="nav-item"><a href="" class="nav-link">ABOUT PROJECT</a></li>
                     <li class="nav-item"><a href="" class="nav-link">CONTACTS</a></li>
@@ -167,14 +167,12 @@
                     }),
                     headers: {"Content-type": "application/json; charset=UTF-8"}
                 })
-                .then(response => response.json())
-                .then(data => {
+                .then(response =>{
                     sessionStorage.clear();
+                    //navigate back to blog list
+                    console.log('reached here...');
+                    location.href = './blog-list.html';
                 });
-
-                //navigate back to blog list
-                location.href = './blog-list.html';
-
             }
             //function to store the selected topics for the blog
             function onSelectTopic(inId){

@@ -1,0 +1,42 @@
+
+-- Create Blog
+CREATE TABLE `blog` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Title` varchar(45) DEFAULT NULL,
+  `Description` varchar(500) DEFAULT NULL,
+  `Content` longtext,
+  `IsActive` tinyint DEFAULT NULL,
+  `CreatedBy` varchar(45) DEFAULT NULL,
+  `CreatedOn` datetime DEFAULT NULL,
+  `UpdatedBy` varchar(45) DEFAULT NULL,
+  `UpdatedOn` datetime DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `Id_UNIQUE` (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+--
+-- Create topic
+CREATE TABLE `topic` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `Name` varchar(45) DEFAULT NULL,
+  `Description` varchar(500) DEFAULT NULL,
+  `IsActive` tinyint DEFAULT NULL,
+  `CreatedBy` varchar(45) DEFAULT NULL,
+  `CreatedOn` datetime DEFAULT NULL,
+  `UpdatedBy` varchar(45) DEFAULT NULL,
+  `UpdatedOn` datetime DEFAULT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `Id_UNIQUE` (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+--
+-- Create topic_blog
+CREATE TABLE `topic_blog` (
+  `Id` int NOT NULL AUTO_INCREMENT,
+  `TopicId` int DEFAULT NULL,
+  `BlogId` int DEFAULT NULL,
+  `IsActive` tinyint DEFAULT NULL,
+  `CreatedBy` varchar(45) DEFAULT NULL,
+  `CreatedOn` datetime DEFAULT NULL,
+  `UpdatedBy` varchar(45) DEFAULT NULL,
+  `UpdatedOn` datetime DEFAULT NULL,
+  PRIMARY KEY (`Id`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
