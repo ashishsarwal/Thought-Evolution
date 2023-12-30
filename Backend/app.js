@@ -4,6 +4,7 @@ const port  = 3000;
 
 const topic = require('./routes/topic');
 const blog = require('./routes/blog');
+const topic_blog = require('./routes/topic_blog');
 
 app.use(function (req, res, next) {
 
@@ -24,8 +25,11 @@ app.use(function (req, res, next) {
     next();
 });
 
+app.use(express.json());
+app.use(express.urlencoded({extended: true}));
 app.use('/topic', topic);
-app.use('/blog', blog)
+app.use('/blog', blog);
+app.use('/topic_blog', topic_blog);
 
 app.listen(port, ()=>{
     console.log('listening on port 3000...');

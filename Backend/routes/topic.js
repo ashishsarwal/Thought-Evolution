@@ -37,13 +37,13 @@ router.get('/:id',(req,res) =>{
 
 router.post('/',(req,res) => {
     // log body to console
-    console.log(req.body);
+        console.log(req.body);
     // insert topic into the table
     con.connect(function(err){
         if(err) console.log(err)
         con.query(`select 1
                    from   topic
-                   where  topic.Name like '%${req.body.Name}%';`
+                   where  topic.Id like ${req.body.Id};`
         ,function(err,result,feilds){
             if (err) throw err;
             if(result.length > 0){
@@ -51,11 +51,13 @@ router.post('/',(req,res) => {
                     if(err) console.log(err); 
                     //console.log('Connected...');
                     con.query(`UPDATE topic
-                               SET    topic.name = ${req.body.Name}
-                               ,      topic.description = ${req.body.Description}
+                               SET    topic.name = '${req.body.Name}'
+                               ,      topic.description = '${req.body.Description}'
                                ,      topic.isActive = ${req.body.IsActive}
-                               ,      topic.updatedBy = ${req.body.UpdatedBy}
-                               ,      topic.updatedOn = ${req.body.UpdatedOn};`
+                               ,      topic.updatedBy = NULL
+                               ,      topic.updatedOn = current_date()
+                               where  topic.id = ${req.body.Id};`
+                               
                 , function (err, result, fields) {
                         if (err) throw err;
                         res.status(200).send('Topic created succesfully!');
@@ -79,8 +81,8 @@ router.post('/',(req,res) => {
                                 UpdatedOn)
                                 VALUES
                                 (NULL,
-                                ${req.body.Name},
-                                ${req.body.Description},
+                                '${req.body.Name}',
+                                '${req.body.Description}',
                                 ${req.body.IsActive},
                                 NULL,
                                 current_date(),

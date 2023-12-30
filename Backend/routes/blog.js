@@ -42,7 +42,7 @@ router.post('/',(req,res) => {
         if(err) console.log(err)
         con.query(`select 1
                    from   blog
-                   where  blog.Title like '%${req.body.Title}%';`
+                   where  blog.Id = ${req.body.Id};`
         ,function(err,result,feilds){
             if (err) throw err;
             if(result.length > 0){
@@ -50,18 +50,38 @@ router.post('/',(req,res) => {
                     if(err) console.log(err); 
                     //console.log('Connected...');
                     con.query(`UPDATE blog
-                               SET    blog.title = ${req.body.Title}
-                               ,      blog.description = ${req.body.Description}
-                               ,      blog.content = ${req.body.Content}
+                               SET    blog.title = '${req.body.Title}'
+                               ,      blog.description = '${req.body.Description}'
+                               ,      blog.content = '${req.body.Content}'
                                ,      blog.isActive = ${req.body.IsActive}
-                               ,      blog.updatedBy = ${req.body.UpdatedBy}
-                               ,      blog.updatedOn = ${req.body.UpdatedOn};`
+                               ,      blog.updatedBy = NULL
+                               ,      blog.updatedOn = current_date()
+                               WHERE  blog.id = ${req.body.Id};
+                               --
+                               DELETE 
+                               FROM     topic_blog
+                               WHERE    topic_blog.BlogId = ${req.body.Id};`
                 , function (err, result, fields) {
                         if (err) throw err;
-                        res.status(200).send('blog created succesfully!');
-                        res.end();
-                        });
+                        req.body.Topics.split(',').forEach(item => {
+                                                          console.log(item);
+                                                          con.query(`INSERT INTO 
+                                                          topic_blog(TopicId
+                                                                    ,BlogId
+                                                                    ,IsActive
+                                                                    ,CreatedOn
+                                                                    ,UpdatedOn)
+                                                              VALUES(${item}
+                                                                    ,${req.body.Id}
+                                                                    ,true
+                                                                    ,current_date()
+                                                                    ,current_date())`
+                                                          ,function (err, result, fields) {
+                                                            if (err) throw err;
+                                                          });
+                                                    });
 
+                        });
                 });
             }
             else{
@@ -80,9 +100,9 @@ router.post('/',(req,res) => {
                                 UpdatedOn)
                                 VALUES
                                 (NULL,
-                                ${req.body.Title},
-                                ${req.body.Description},
-                                ${req.body.Content},
+                                '${req.body.Title}',
+                                '${req.body.Description}',
+                                '${req.body.Content}',
                                 ${req.body.IsActive},
                                 NULL,
                                 current_date(),
@@ -90,9 +110,26 @@ router.post('/',(req,res) => {
                                 current_date());`
                 , function (err, result, fields) {
                         if (err) throw err;
-                        res.status(200).send('blog created succesfully!');
-                        res.end();
-                        });
+                        req.body.Topics.split(',').forEach(item => {
+                                                        console.log(item);
+                                                        con.query(`INSERT INTO 
+                                                        topic_blog(TopicId
+                                                                ,BlogId
+                                                                ,IsActive
+                                                                ,CreatedOn
+                                                                ,UpdatedOn)
+                                                            VALUES(${item}
+                                                                ,(select id
+                                                                    from blog
+                                                                    where blog.title = '${req.body.Title}')
+                                                                ,true
+                                                                ,current_date()
+                                                                ,current_date())`
+                                                        ,function (err, result, fields) {
+                                                        if (err) throw err;
+                                                    });
+                                                });
+                 });
 
                 });
             }

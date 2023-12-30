@@ -4,3 +4,9 @@
 function getAPIDomain(){
     return 'http://localhost:3000';
 }
+
+function getIntParam(paramName){
+    let queryString = new URLSearchParams(location.search);
+    paramName = queryString.get(paramName);
+    return parseInt(paramName);
+}

@@ -42,6 +42,9 @@
           </nav>
       </div>
     </div>
+    <div class="container mt-5 d-flex justify-content-end">
+        <button class="btn btn-primary" onclick="location.href = './create-topic.html?topicId=0'">New Topic</button>
+    </div>
     <div id="topic-list" class="container my-5">
         <script>
             function createTopicList(){
@@ -51,7 +54,7 @@
                     let listHtml = `<ul class="list-group">`;
                     data.forEach(item =>{
                         listHtml = listHtml + `<li class="list-group-item">`;
-                        listHtml = listHtml + `<a href="./create-topic.html?topicId=${item.Id}"><h3>${item.Name}</h3></a>`;
+                        listHtml = listHtml + `<a href="./create-topic.html?topicId=${item.Id}"><h4>${item.Name}</h4></a>`;
                         listHtml = listHtml + `<div>${item.Description}</div>`;
                         listHtml = listHtml + `</li>`;
                     });
