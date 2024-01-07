@@ -151,11 +151,17 @@
                 //refresh form data into variable
                 getFormData();
 
-                //write form data to database
-                console.log('saving form data...');
-                console.log(sessionStorage);
+                //get image blob
+                let file = document.getElementById('file').files[0];
+                let reader = new FileReader();
+                reader.onload = ()=>{
+                    sessionStorage.setItem('BlogImage', reader.result);
 
-                fetch(getAPIDomain() + '/blog',{
+                    //write form data to database
+                    console.log('saving form data...');
+                    console.log(sessionStorage);
+
+                    fetch(getAPIDomain() + '/blog',{
                     method: 'POST',
                     body: JSON.stringify({
                         Id: sessionStorage.getItem('Id'),
@@ -163,16 +169,20 @@
                         Description: sessionStorage.getItem('Description'),
                         IsActive: sessionStorage.getItem('IsActive'),
                         Content: sessionStorage.getItem('Content'),
-                        Topics: sessionStorage.getItem('TopicList')
+                        Topics: sessionStorage.getItem('TopicList'),
+                        BlogImage: sessionStorage.getItem('BlogImage')
                     }),
                     headers: {"Content-type": "application/json; charset=UTF-8"}
-                })
-                .then(response =>{
-                    sessionStorage.clear();
-                    //navigate back to blog list
-                    console.log('reached here...');
-                    location.href = './blog-list.html';
-                });
+                    })
+                    .then(response =>{
+                        //sessionStorage.clear();
+                        //navigate back to blog list
+                        console.log('reached here...');
+                        //location.href = './blog-list.html';
+                    });
+                }
+
+                reader.readAsDataURL(file);
             }
             //function to store the selected topics for the blog
             function onSelectTopic(inId){

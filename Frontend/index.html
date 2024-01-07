@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thought Evolution</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="./js/main.js"></script>
     <style>
         .carousel-caption{
             margin-left: -5rem;
@@ -141,7 +142,66 @@
                 </div>
             </div>
         </div>
+        <div id="BlogsByTopic" class="container mt-5"></div>
     </div>
+    <script>
+        let topics;
+        let blogs;
+        //Function that returns topics
+        function createBlogsTopicWiseUI(){
+            //Fetch Topics
+            fetch(getAPIDomain() + '/topic')
+            .then((response) => response.json())
+            .then(data =>{
+                topics = data;
+                //Counter for number of blogs in one line.
+                topics.forEach(topic => {
+                document.getElementById('BlogsByTopic').innerHTML = document.getElementById('BlogsByTopic').innerHTML  + `<div id="topic-${topic.Id}" class="mt-5"><h3>${topic.Name}</h3></div>`;
+                    //Fetch Blogs
+                    fetch(getAPIDomain() + `/blogs_by_topic/${topic.Id}`)
+                    .then((response) => response.json())
+                    .then((data) => {
+                        //Create HTML
+                        let blogsByTopic = '';
+                        //initialize counter for each topic
+                        let counter = 0;
+                        data.forEach(blog =>{
+                            //Check if counter is zero and start creating a new row
+                            if(counter == 0){
+                                blogsByTopic = blogsByTopic + '<div class="row mt-5">';
+                            }
+                            blogsByTopic = blogsByTopic + `<div class="col-3">`;
+                            if(blog.BlogImage){
+                                blogsByTopic = blogsByTopic + `<img src="${getAPIDomain() + '/images/blog-' + blog.Id + '.png'}" height="200" style="max-width: 100%;" class="mb-3">`;
+                            }
+                            else{
+                                blogsByTopic = blogsByTopic + `<div style="height: 200px"></div>`;
+                            }
+                            blogsByTopic = blogsByTopic + `<div><a href="./view-blog.html?blogId=${blog.Id}"><h4>${blog.Title}</h4></a></div>`;
+                            blogsByTopic = blogsByTopic + `<div>${blog.Description}</div></div>`;
+                            counter = counter + 1;
+                            //Check if four columns are added start new row
+                            if(counter == 4){
+                                blogsByTopic = blogsByTopic + '</div>';
+                                counter = 0;
+                            }
+                        });
+                        document.getElementById(`topic-${topic.Id}`).innerHTML = document.getElementById(`topic-${topic.Id}`).innerHTML + blogsByTopic;
+                    });                    
+                });
+            });
+        };
+        //Function that returns blogs
+        function getBlogsList(){
+            fetch(getAPIDomain() + '/blogs_by_topic')
+            .then((response) => response.json())
+            .then((data) => {
+                blogs = data;
+            });
+        }
+        //Function Call
+        createBlogsTopicWiseUI();
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
