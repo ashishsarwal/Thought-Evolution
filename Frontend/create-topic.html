@@ -20,25 +20,7 @@
     <div class="bg-primary pt-5 sticky-top" style="top: -3rem;">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark justify-content-center">
-                <a href="" class="navbar-brand">
-                    <img src="./resources/logo.png" alt="Thought Evolution" width="220px">
-                </a>
-                <ul class="navbar-nav ml-3">
-                    <li class="nav-item"><a href="./index.html" class="nav-link">HOME</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">TOPICS</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">ABOUT PROJECT</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">CONTACTS</a></li>
-                    <li class="nav-item dropdown">
-                      <a href="" class="nav-link dropdown-toggle active" role="button" data-bs-toggle="dropdown">
-                        ADMIN
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a href="./topic-list.html" class="dropdown-item">Manage Topics</a></li>
-                        <li><a href="./blog-list.html" class="dropdown-item">Manage Blogs</a></li>
-  
-                      </ul>
-                    </li>
-                </ul>
+                <script>createNav('ADMIN');</script>
             </nav>
         </div>
     </div>
@@ -63,61 +45,7 @@
             <input type="button" value="Save" class="btn btn-primary float-right" onclick="save();">
         </div>
     </div>
-    <script>
-        //Set form data onload
-        function setFormData(){
-            //clear sessionStorage
-            sessionStorage.clear();
-            //get parameter
-            let param = getIntParam('topicId');
-            //console.log(`read param... ${param}`);
-            //get data
-            fetch(getAPIDomain() + '/topic/' + param)
-                .then((response) => response.json())
-                .then(data=>{
-                   document.getElementById('name').value = data[0].Name; 
-                   document.getElementById('description').value = data[0].Description; 
-                   document.getElementById('active').checked = data[0].IsActive; 
-                   getFormData();
-                });
-        }
-        setFormData();
-        //Get form data onload
-        function getFormData(){
-            //clear sessionStorage
-            sessionStorage.clear();
-            //assign values in session storage
-            sessionStorage.setItem('Id', getIntParam('topicId'));
-            sessionStorage.setItem('Name', document.getElementById('name').value);
-            sessionStorage.setItem('Description', document.getElementById('description').value);
-            sessionStorage.setItem('IsActive', document.getElementById('active').checked);
-        }
-        //Save form data
-        function save(){
-            //refresh form data into variable
-            getFormData();
-
-            //write form data to database
-            console.log('saving form data...');
-            console.log(sessionStorage);
-
-            fetch(getAPIDomain() + '/topic',{
-                method: 'POST',
-                body: JSON.stringify({
-                    Id: sessionStorage.getItem('Id'),
-                    Name: sessionStorage.getItem('Name'),
-                    Description: sessionStorage.getItem('Description'),
-                    IsActive: sessionStorage.getItem('IsActive')
-                }),
-                headers: {"Content-type": "application/json; charset=UTF-8"}
-            })
-            .then(response => {
-                sessionStorage.clear();
-                //navigate back to topic list
-                location.href = './topic-list.html';
-            });
-        }
-    </script>
+    <script src="./js/create-topic.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

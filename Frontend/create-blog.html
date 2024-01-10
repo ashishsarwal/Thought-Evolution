@@ -20,25 +20,7 @@
     <div class="bg-primary pt-5 sticky-top" style="top: -3rem;">
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark justify-content-center">
-                <a href="" class="navbar-brand">
-                    <img src="./resources/logo.png" alt="Thought Evolution" width="220px">
-                </a>
-                <ul class="navbar-nav ml-3">
-                    <li class="nav-item"><a href="./index.html" class="nav-link">HOME</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">TOPICS</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">ABOUT PROJECT</a></li>
-                    <li class="nav-item"><a href="" class="nav-link">CONTACTS</a></li>
-                    <li class="nav-item dropdown">
-                      <a href="" class="nav-link dropdown-toggle active" role="button" data-bs-toggle="dropdown">
-                        ADMIN
-                      </a>
-                      <ul class="dropdown-menu">
-                        <li><a href="./topic-list.html" class="dropdown-item">Manage Topics</a></li>
-                        <li><a href="./blog-list.html" class="dropdown-item">Manage Blogs</a></li>
-  
-                      </ul>
-                    </li>
-                </ul>
+                <script>createNav('ADMIN');</script>
             </nav>
         </div>
     </div>
@@ -61,7 +43,7 @@
             </div>
             <div class="mb-3">
                 <label for="" class="form-label">Upload an Image</label>
-                <input type="file" name="" id="file" class="form-control">
+                <input type="file" name="" id="file" class="form-control" onchange="onImageChange()">
             </div>
             <div class="mb-3">
                 <div class="form-check form-switch">
@@ -76,12 +58,12 @@
                 <script src="https://cdn.ckeditor.com/ckeditor5/36.0.1/classic/ckeditor.js"></script>
                 <script>
                     let myCKEditor;
-                ClassicEditor
-                    .create(document.querySelector('#editor'))
-                    .then(newEditor => myCKEditor = newEditor)
-                    .catch( error => {
-                        console.error( error );
-                    } );
+                    ClassicEditor
+                        .create(document.querySelector('#editor'))
+                        .then(newEditor => myCKEditor = newEditor)
+                        .catch( error => {
+                            console.error( error );
+                        } );
                 </script>
                 <!-- Implementation ends here for CK Editor-->
             </div>
@@ -89,126 +71,8 @@
         <div class="d-flex justify-content-end">
             <input type="button" value="Save" class="btn btn-primary float-right" onclick="save();">
         </div>
-        <script>
-            //Create topic list
-            function createTopicList(){
-                fetch(getAPIDomain() + `/topic_blog/${getIntParam('blogId')}`)
-                .then((response) => response.json())
-                .then(data=>{
-                    let listHtml = `<label for="" class="form-label">Select Topics</label>`;
-                    listHtml = listHtml + `<ul class="list-group">`;
-                    data.forEach(item =>{
-                        listHtml = listHtml + `<li class="list-group-item">`;
-                        listHtml = listHtml + `<div class="form-check">`;
-                        if(item.IsSelected){
-                            listHtml = listHtml + `<input type="checkbox" name="" id="" class="form-check-input" onchange="onSelectTopic(${item.Id})" checked>`;
-                            onSelectTopic(item.Id);
-                        }
-                        else{
-                            listHtml = listHtml + `<input type="checkbox" name="" id="" class="form-check-input" onchange="onSelectTopic(${item.Id})">`;
-                        }
-                        listHtml = listHtml + `<label for="" class="form-check-label">${item.Name}</label>`;
-                        listHtml = listHtml + `</div>`;
-                        listHtml = listHtml + `</li>`;
-                    });
-                    listHtml = listHtml + `</ul>`;
-
-                    document.getElementById('topic-list').innerHTML = listHtml;
-                });
-            }
-            //Set form data onload
-            function setFormData(){
-                //clear session storage
-                sessionStorage.clear();
-                // get parameter from url
-                let param = getIntParam('blogId');
-                //fetch data from db
-                fetch(`${getAPIDomain()}/blog/${param}`)
-                .then((response) => response.json())
-                .then(data=>{
-                    document.getElementById('title').value = data[0].Title;
-                    document.getElementById('description').value = data[0].Description;
-                    document.getElementById('active').checked = data[0].IsActive;
-                    myCKEditor.setData(data[0].Content);
-                    //update sessionStorage
-                    getFormData();
-                });
-                //create topic list
-                createTopicList();
-            }
-            //Function call
-            setFormData();
-            //Get form Data
-            function getFormData(){
-                sessionStorage.setItem('Id', getIntParam('blogId'));
-                sessionStorage.setItem('Title', document.getElementById('title').value);
-                sessionStorage.setItem('Description', document.getElementById('description').value);
-                sessionStorage.setItem('IsActive', document.getElementById('active').checked);
-                sessionStorage.setItem('Content', myCKEditor.getData());
-            }
-            //Save form data
-            function save(){
-                //refresh form data into variable
-                getFormData();
-
-                //get image blob
-                let file = document.getElementById('file').files[0];
-                let reader = new FileReader();
-                reader.onload = ()=>{
-                    sessionStorage.setItem('BlogImage', reader.result);
-
-                    //write form data to database
-                    console.log('saving form data...');
-                    console.log(sessionStorage);
-
-                    fetch(getAPIDomain() + '/blog',{
-                    method: 'POST',
-                    body: JSON.stringify({
-                        Id: sessionStorage.getItem('Id'),
-                        Title: sessionStorage.getItem('Title'),
-                        Description: sessionStorage.getItem('Description'),
-                        IsActive: sessionStorage.getItem('IsActive'),
-                        Content: sessionStorage.getItem('Content'),
-                        Topics: sessionStorage.getItem('TopicList'),
-                        BlogImage: sessionStorage.getItem('BlogImage')
-                    }),
-                    headers: {"Content-type": "application/json; charset=UTF-8"}
-                    })
-                    .then(response =>{
-                        //sessionStorage.clear();
-                        //navigate back to blog list
-                        console.log('reached here...');
-                        //location.href = './blog-list.html';
-                    });
-                }
-
-                reader.readAsDataURL(file);
-            }
-            //function to store the selected topics for the blog
-            function onSelectTopic(inId){
-                // declare an array
-                let topics = [];
-                // check if sessionStorage already has items
-                if(sessionStorage.TopicList){
-                    topics = sessionStorage.TopicList.split(',');
-                    if(topics.indexOf(inId.toString()) != -1){
-                        //console.log('logging array...' + topics);
-                        topics = topics.filter(item => item != inId);   
-                        //console.log('logging array after filter...' + topics);
-                    }
-                    else{
-                        topics.push(inId);
-                    }
-                }
-                else{
-                    topics.push(inId);
-                }
-                // update sessionStorage
-                sessionStorage.TopicList = topics;
-                console.log('topic list ' + sessionStorage.TopicList);
-            }
-        </script>
-    </div>
+    </div>    
+    <script src="./js/create-blog.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
