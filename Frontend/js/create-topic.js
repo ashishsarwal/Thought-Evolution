@@ -9,8 +9,9 @@ function setFormData(){
     fetch(getAPIDomain() + '/topic/' + param)
         .then((response) => response.json())
         .then(data=>{
-            document.getElementById('name').value = data[0].Name; 
-            document.getElementById('description').value = data[0].Description; 
+            document.getElementById('name').value = data[0].Name.replaceAll("\\'",`'`).replaceAll("<br>",`\n`); 
+            document.getElementById('description').value = data[0].Description.replaceAll("\\'",`'`).replaceAll("<br>",`\n`); 
+            document.getElementById('quotation').value = data[0].Quote.replaceAll("\\'",`'`).replaceAll("<br>",`\n`); 
             document.getElementById('active').checked = data[0].IsActive; 
             getFormData();
         });
@@ -18,12 +19,11 @@ function setFormData(){
 setFormData();
 //Get form data onload
 function getFormData(){
-    //clear sessionStorage
-    sessionStorage.clear();
     //assign values in session storage
     sessionStorage.setItem('Id', getIntParam('topicId'));
     sessionStorage.setItem('Name', document.getElementById('name').value);
     sessionStorage.setItem('Description', document.getElementById('description').value);
+    sessionStorage.setItem('Quotation', document.getElementById('quotation').value);
     sessionStorage.setItem('IsActive', document.getElementById('active').checked);
 }
 //Save form data
@@ -39,9 +39,11 @@ function save(){
         method: 'POST',
         body: JSON.stringify({
             Id: sessionStorage.getItem('Id'),
-            Name: sessionStorage.getItem('Name'),
-            Description: sessionStorage.getItem('Description'),
-            IsActive: sessionStorage.getItem('IsActive')
+            Name: sessionStorage.getItem('Name').replaceAll(`'`,"\\'").replaceAll(`\n`,"<br>"),
+            Description: sessionStorage.getItem('Description').replaceAll(`'`,"\\'").replaceAll(`\n`,"<br>"),
+            Quote: sessionStorage.getItem('Quotation').replaceAll(`'`,"\\'").replaceAll(`\n`,"<br>"),
+            IsActive: sessionStorage.getItem('IsActive'),
+            topicImage: sessionStorage.getItem('topicImage')
         }),
         headers: {"Content-type": "application/json; charset=UTF-8"}
     })
@@ -50,4 +52,14 @@ function save(){
         //navigate back to topic list
         location.href = './topic-list.html';
     });
+}
+
+function onImageChange(){
+    //get image blob
+    let file = document.getElementById('file').files[0];
+    let reader = new FileReader();
+    reader.onload = ()=>{
+        sessionStorage.setItem('topicImage', reader.result);
+    }
+    reader.readAsDataURL(file);
 }

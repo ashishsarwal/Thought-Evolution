@@ -38,8 +38,8 @@ function setFormData(){
     fetch(`${getAPIDomain()}/blog/${param}`)
     .then((response) => response.json())
     .then(data=>{
-        document.getElementById('title').value = data[0].Title;
-        document.getElementById('description').value = data[0].Description;
+        document.getElementById('title').value = data[0].Title.replaceAll("\\'",`'`).replaceAll("<br>",`\n`);
+        document.getElementById('description').value = data[0].Description.replaceAll("\\'",`'`).replaceAll("<br>",`\n`);
         document.getElementById('active').checked = data[0].IsActive;
         myCKEditor.setData(data[0].Content);
         //update sessionStorage
@@ -73,10 +73,10 @@ function save(){
     method: 'POST',
     body: JSON.stringify({
         Id: sessionStorage.getItem('Id'),
-        Title: sessionStorage.getItem('Title'),
-        Description: sessionStorage.getItem('Description'),
+        Title: sessionStorage.getItem('Title').replaceAll(`'`,"\\'").replaceAll(`\n`,"<br>"),
+        Description: sessionStorage.getItem('Description').replaceAll(`'`,"\\'").replaceAll(`\n`,"<br>"),
         IsActive: sessionStorage.getItem('IsActive'),
-        Content: sessionStorage.getItem('Content'),
+        Content: sessionStorage.getItem('Content').replaceAll(`'`,"\\'").replaceAll(`\n`,"<br>"),
         Topics: sessionStorage.getItem('TopicList'),
         BlogImage: sessionStorage.getItem('BlogImage')
     }),

@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Thought Evolution</title>
+    <link rel="stylesheet" href="./css/main.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
         .carousel-caption{
@@ -14,9 +15,19 @@
             width: 5%;
         }
 
-        #blog img{
-            width: 100%;
+        .main,
+        #blog{
+            min-height: 100vh;
         }
+
+        .main{
+            background-image: url(./resources/blog-background.png);
+        }
+
+        #blog{
+            background-color: #fff;
+        }
+
     </style>
     <script src="./js/main.js"></script>
 </head>
@@ -28,7 +39,15 @@
             </nav>
         </div>
     </div>
-    <div id="blog" class="container my-5">
+    <div class="main">
+        <div id="blog" class="container p-5">
+        </div>
+        <footer class="bg-primary p-l container">
+            <div>
+                <h4> > today's thought create tomorrow's life </h4>
+                <div>&#xa9; thoughtevolution.ru / эволюциямысли.рф</div>
+            </div>
+        </footer>
     </div>
     <script>
         //Set form data onload
@@ -42,9 +61,19 @@
             .then((response) => response.json())
             .then(data=>{
                 let blogHTML = "";
-                blogHTML += `<h3 class="text-center mb-5">${data[0].Title}</h3>`;
-                blogHTML += `<img src="${getAPIDomain()}/images/blog-${data[0].Id}.png" class="mb-5" style="max-width: 100%;">`
+                blogHTML += `<div class="row">`;
+                blogHTML += `<div class="col-6 d-flex align-items-end">`;
+                blogHTML += `<div>`
+                blogHTML += `<h3 class="display-4 mb-5">${data[0].Title}</h3>`;
+                blogHTML += `<div><h5 class=" mb-5">${data[0].Description}</h5></div>`;
+                blogHTML += `</div>`;
+                blogHTML += `</div>`;
+                blogHTML += `<div class="col-6"><img src="${getImageDomain()}/images/blog-${data[0].Id}.png" class="mb-5" style="width: 100%;"></div></div>`
+                blogHTML += `<div class="content">`;
                 blogHTML += data[0].Content;
+                blogHTML += `</div>`
+                blogHTML += `</div>`
+
                 document.getElementById('blog').innerHTML = blogHTML;
             });
         }
