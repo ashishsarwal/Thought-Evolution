@@ -22,10 +22,12 @@
 
         .main{
             background-image: url(./resources/blog-background.png);
+            background-size: 330px;
         }
 
-        #blog{
+        #blog {
             background-color: #fff;
+            padding: 5.5rem 6.5rem;
         }
 
     </style>
@@ -40,7 +42,7 @@
         </div>
     </div>
     <div class="main">
-        <div id="blog" class="container p-5">
+        <div id="blog" class="container">
         </div>
         <footer class="bg-primary p-l container">
             <div>
@@ -64,8 +66,8 @@
                 blogHTML += `<div class="row">`;
                 blogHTML += `<div class="col-6 d-flex align-items-end">`;
                 blogHTML += `<div>`
-                blogHTML += `<h3 class="display-4 mb-5">${data[0].Title}</h3>`;
-                blogHTML += `<div><h5 class=" mb-5">${data[0].Description}</h5></div>`;
+                blogHTML += `<h3 class="display-5 mb-5">${data[0].Title}</h3>`;
+                blogHTML += `<div><h5 class="mb-5" style="border-left: 2px solid; padding-left: 16px;">${data[0].Description}</h5></div>`;
                 blogHTML += `</div>`;
                 blogHTML += `</div>`;
                 blogHTML += `<div class="col-6"><img src="${getImageDomain()}/images/blog-${data[0].Id}.png" class="mb-5" style="width: 100%;"></div></div>`

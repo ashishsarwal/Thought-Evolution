@@ -181,7 +181,37 @@
                 </div>
             </div>
             <div id="BlogsByTopic" class="container mt-5"></div>
-            <footer class="mt-5 bg-primary p-l">
+            <div class="container mt-5 mb-5">
+                <div class="pt-l" style="padding-top: 3rem;">                    
+                    <h3>About the Project</h3>
+                    <h5 style="text-align: justify; width: 75%;" class="mt-4">
+                        <i>&nbsp;&nbsp;&nbsp;&nbsp;What we are today, -- this is a consequence of our yesterday's thoughts and today's thoughts create tomorrow's life. It is easy to say but not easy to do. I have to write more text. What we are oday, -- this is a consequence of our yesterday's thoughts and today's thoughts create tomorrow's life. It is easy to say but not easy to do. I have to write more text.</i>
+                        <br><br>
+                        <i>&nbsp;&nbsp;&nbsp;&nbsp;What we are today, -- this is a consequence of our yesterday's thoughts and today's thoughts create tomorrow's life. It is easy to say but not easy to do. I have to write more text. What we are oday, -- this is a consequence of our yesterday's thoughts and today's thoughts create tomorrow's life. It is easy to say but not easy to do. I have to write more text.</i>
+                    </h5>
+                </div>
+                <div class="pt-l mt-5" style="padding-top: 0;">
+                    <div class="row">
+                        <div class="col-9">
+                            <img src="./resources/about-project.png" alt="" width="100%" onclick="document.getElementById('hiddenBtn').click();">
+                        </div>
+                        <div class="col-3 side-quote"> <h5><i>Unique characteristics, that distinguish youth - energy, dynamism and the ability to make a difference contribution to the betterment of society and creating an atmosphere development-friendly abilities.</i></div>
+                    </div>
+                </div>
+            </div>
+            <!-- Button trigger modal -->
+            <button id="hiddenBtn"  type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal" style="display: none;">
+                Launch demo modal
+            </button>            
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <img src="./resources/modal-img.png" alt="">
+                </div>
+                </div>
+            </div>
+            <footer class="mt-2 bg-primary p-l">
                 <div>
                     <h4> > today's thought create tomorrow's life </h4>
                     <div>&#xa9; thoughtevolution.ru / эволюциямысли.рф</div>
@@ -204,7 +234,7 @@
                 document.getElementById('BlogsByTopic').innerHTML = document.getElementById('BlogsByTopic').innerHTML  
                                                                   + `<div id="topic-${topic.Id}" class="pt-l"><div><div><h3>${topic.Name}</h3></div><div style="width: 75%;">`
                                                                   + `<img src="${getImageDomain() + '/images/topic-' + topic.Id + '.png'}" style="width:100%; margin-top: -132px;" class="mb-5">`
-                                                                  + `<h5 style="text-align: justify;"><i>&nbsp;&nbsp;${topic.Description.replaceAll('<br>','<br><br>&nbsp;&nbsp;')}</i><h5></div></div>`;
+                                                                  + `<h5 style="text-align: justify;"><i>&nbsp;&nbsp;&nbsp;&nbsp;${topic.Description.replaceAll('<br>','<br><br>&nbsp;&nbsp;&nbsp;&nbsp;')}</i><h5></div></div>`;
                     //Fetch Blogs
                     fetch(getAPIDomain() + `/blogs_by_topic/top/${topic.Id}`)
                     .then((response) => response.json())

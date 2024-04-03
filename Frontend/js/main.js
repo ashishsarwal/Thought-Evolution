@@ -79,16 +79,16 @@ function getAllBlogsForTopicById(topicId){
             if(counter == 0){
                 blogsByTopic = blogsByTopic + '<div class="row mt-5">';//row starts here
             }
-            blogsByTopic = blogsByTopic + `<div class="col-4">`;//column starts here
+            blogsByTopic = blogsByTopic + `<div class="col-4"><a href="./view-blog.html?blogId=${blog.Id}">`;//column starts here
             // if(blog.BlogImage = ''){
                 blogsByTopic = blogsByTopic + `<img src="${getImageDomain() + '/images/blog-' + blog.Id + '.png'}" alt=" loading..." height="200" style="max-width: 100%;" class="mb-3">`;
             // }
             // else{
             //     blogsByTopic = blogsByTopic + `<div style="height: 200px"></div>`;
             // }
-            blogsByTopic = blogsByTopic + `<div><a href="./view-blog.html?blogId=${blog.Id}"><h4>${blog.Title}</h4></a></div>`;
+            blogsByTopic = blogsByTopic + `<div><h4>${blog.Title}</h4></div>`;
             blogsByTopic = blogsByTopic + `<div><h6><i>${blog.Description}</i></h6></div>`;
-            blogsByTopic = blogsByTopic + `</div>`; // column ends here
+            blogsByTopic = blogsByTopic + `</a></div>`; // column ends here
             counter = counter + 1;
             //Check if four columns are added start new row
             if(counter == 3){

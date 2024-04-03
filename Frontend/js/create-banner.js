@@ -13,12 +13,31 @@ function setFormData(){
         document.getElementById('description').value = data[0].Description.replaceAll("\\'",`'`).replaceAll("<br>",`\n`);
         document.getElementById('blogDropdown').value = data[0].BlogId;
         document.getElementById('active').checked = data[0].IsActive;
-        //update sessionStorage
-        getFormData();
+
+        //Set Dropdown Value
+        createBlogDropDown(data[0].BlogId);
     });
 }
 
-
+function createBlogDropDown(blogId){
+    fetch(getAPIDomain() + '/blog')
+    .then((response) => response.json())
+    .then(data =>{
+        let blogDropdownHTML = `<option value="0" selected> - Select Blog - </option>`;
+        console.log(data);
+        data.forEach((blog, index) => {
+            if(blog.Id == blogId){
+                blogDropdownHTML += `<option value="${blog.Id}" selected>${blog.Title}</option>`;
+            }
+            else{
+                blogDropdownHTML += `<option value="${blog.Id}">${blog.Title}</option>`;
+            }
+        });   
+        document.getElementById('blogDropdown').innerHTML = blogDropdownHTML;                                 
+    });
+    //update sessionStorage
+    getFormData();
+}
 //Function call
 
 setFormData();

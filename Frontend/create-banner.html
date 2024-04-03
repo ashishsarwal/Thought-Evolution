@@ -38,22 +38,7 @@
                 </div>
                 <div class="mb-3">
                     <label for="" class="form-label">Blog</label>
-                    <select id="blogDropdown" class="form-select" aria-label="Default select">                        
-                        <script>
-                            function createBlogDropDown(){
-                                fetch(getAPIDomain() + '/blog')
-                                .then((response) => response.json())
-                                .then(data =>{
-                                    let blogDropdownHTML = `<option value="0" selected> - Select Blog - </option>`;
-                                    console.log(data);
-                                    data.forEach((blog, index) => {
-                                        blogDropdownHTML += `<option value="${blog.Id}">${blog.Title}</option>`;
-                                    });   
-                                    document.getElementById('blogDropdown').innerHTML = blogDropdownHTML;                                 
-                                });
-                            }
-                            createBlogDropDown();
-                        </script>
+                    <select id="blogDropdown" class="form-select" aria-label="Default select"> 
                     </select>
                 </div>
                 <div class="mb-3 upload">
