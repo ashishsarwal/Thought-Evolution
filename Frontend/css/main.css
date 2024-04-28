@@ -96,3 +96,29 @@ footer.bg-primary {
     background: #2e7797;
     color: #fff !important;
 }
+
+
+/*view blog*/
+
+table,
+tr,
+td{
+    border: none !important;
+    vertical-align: top;
+}
+
+td + td{
+    padding: 0 16px;
+}
+
+table tr td:first-child{
+    padding: 0 16px 0 0;
+}
+
+table tr td:last-child{
+    padding: 0 0 0 16px;
+}
+
+.content td{
+    font-size: 1.25rem;
+}

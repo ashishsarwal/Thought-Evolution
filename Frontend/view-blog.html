@@ -27,7 +27,27 @@
 
         #blog {
             background-color: #fff;
-            padding: 5.5rem 6.5rem;
+            padding: 5.5rem 8.5rem;
+        }
+
+        figure{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        figure iframe{
+            height: 506.25px !important;
+            width: 900px !important;
+        }
+
+        figcaption{
+            font-size: 1rem;
+            padding-top: 4px;
+            font-style: italic;
+            text-align: left;
+            width: -webkit-fill-available;
         }
 
     </style>
@@ -77,6 +97,22 @@
                 blogHTML += `</div>`
 
                 document.getElementById('blog').innerHTML = blogHTML;
+
+                // make videos visible
+
+                document.querySelectorAll('figure').forEach(item => {
+                    item.innerHTML = item.innerHTML
+                                    .replaceAll('oembed', 'iframe')
+                                    .replace('url', 'src')
+                                    .replace('>',' style="width: 100%; height: 100%; top: 0; left: 0;" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen="">')
+                                    .replace('https://www.youtube.com/watch?v=', 'https://www.youtube.com/embed/');
+                });
+
+                // add four spaces to all paragraphs
+
+                document.querySelectorAll('.content p').forEach(item => {
+                    item.innerHTML = '&nbsp;&nbsp;&nbsp;&nbsp;' + item.innerHTML;
+                });
             });
         }
         createBlog();
